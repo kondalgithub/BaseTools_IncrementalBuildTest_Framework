@@ -1,0 +1,13 @@
+diff --git a/FatPkg/EnhancedFatDxe/Fat.h b/FatPkg/EnhancedFatDxe/Fat.h
+index fcc25952d4..cd87799faa 100644
+--- a/FatPkg/EnhancedFatDxe/Fat.h
++++ b/FatPkg/EnhancedFatDxe/Fat.h
+@@ -63,7 +63,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
+ // Minimum sector size is 512B, Maximum sector size is 4096B
+ // Max sectors per cluster is 128
+ //
+-#define MAX_BLOCK_ALIGNMENT               12
++#define MAX_BLOCK_ALIGNMENT               9
+ #define MIN_BLOCK_ALIGNMENT               9
+ #define MAX_SECTORS_PER_CLUSTER_ALIGNMENT 7
+ 

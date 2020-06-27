@@ -1,0 +1,10 @@
+Case_Num = 1
+
+[CasePatches]
+[[CasePatches.Case]]
+name = "Common"
+desc = "Empty patch.\n"
+repo = [ "Edk2",]
+patch = [ "C:\\WorkSpace\\UniFiedBuild_Project\\IncrementalBuild_TestCase\\edk2_basetools_regression_test\\CasePatches\\Common\\empty.patch",]
+hash = ""
+
