@@ -54,8 +54,8 @@ class PlatformIncrementalBuild:
         return self.get_build_hash(self.build_dir)
     
     def get_clean_build_hash(self):
-        """Do incremental clean build and get hash of build folder."""
-        BuildPlatform(working_dir,build_steps)
+        """Do clean build and get hash of build folder."""
+        BuildPlatform(self.working_dir,build_steps)
         return self.get_build_hash(self.build_dir)
     
     def get_buildfiles(self, build_dir):
