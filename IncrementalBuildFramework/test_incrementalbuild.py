@@ -30,7 +30,7 @@ def test_incrementalbuild():
     incremental_build_obj = IncrementalBuild.PlatformIncrementalBuild(framework_path)
 
     
-    patch_list = incremental_build.get_patches()
+    patch_list = incremental_build_obj.get_patches()
     print (patch_list)
     for patch in patch_list:
         #For code base after clone, do full build and save hash.
