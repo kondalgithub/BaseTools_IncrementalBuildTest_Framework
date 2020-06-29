@@ -39,6 +39,7 @@ class PlatformIncrementalBuild:
         self.platform_workspace = None
         self.build_dir = None
         self.working_dir = None
+        self.codebase_hash = None
         self.set_workspace()
 
     def set_workspace(self):
@@ -48,16 +49,20 @@ class PlatformIncrementalBuild:
         self.build_steps = self.platform_manifest.BuildCate.get("Basic")
         self.working_dir = self.platform_manifest.Defines.get("workdir")
 
-    def get_incremental_build_hash(self):
-        """Do incremental build and get hash of build folder."""
+    def platform_cleanbuild(self):
+        BuildPlatform(self.working_dir, self.build_steps,['BuildPlatform'])
+
+    def platform_build(self):
         BuildPlatform(self.working_dir, self.build_steps,['BuildClean'])
-        return self.get_build_hash(self.build_dir)
-    
-    def get_clean_build_hash(self):
+
+    def platform_fullbuild(self):
+        BuildPlatform(self.working_dir, self.build_steps)
+             
+    def get_hash(self):
         """Do clean build and get hash of build folder."""
-        BuildPlatform(self.working_dir,build_steps)
-        return self.get_build_hash(self.build_dir)
-    
+        build_dir_hash = self._get_build_hash(self.build_dir)
+        return build_dir_hash
+
     def get_buildfiles(self, build_dir):
         """Return file list from a build folder."""
         build_file_list = []
@@ -69,7 +74,7 @@ class PlatformIncrementalBuild:
         return build_file_list
 
     def apply_patch(self, patchfile):
-        self.git_cmd("apply", patchfile)
+        self.git_cmd("am", "--3way", "--ignore-space-change", "--keep-cr", patchfile) 
 
     def revert_patch(self, patchfile):
         self.git_cmd("apply", "-R", patchfile) 
@@ -83,7 +88,7 @@ class PlatformIncrementalBuild:
                     patchfiles_list.append(os.path.join(root,file_name))
         return patchfiles_list
 
-    def get_build_hash(self, build_dir):
+    def _get_build_hash(self, build_dir):
         """Compute hash of directory."""
         sha256 = FileHash('sha256')
         build_files = self.get_buildfiles(build_dir)

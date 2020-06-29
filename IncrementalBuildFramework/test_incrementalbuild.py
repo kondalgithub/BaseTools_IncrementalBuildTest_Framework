@@ -27,16 +27,26 @@ import IncrementalBuild
 def test_incrementalbuild():
     #Initialize incremental build
     framework_path = os.path.dirname(os.path.abspath(__file__))
-    incremental_build = IncrementalBuild.PlatformIncrementalBuild(framework_path)
+    incremental_build_obj = IncrementalBuild.PlatformIncrementalBuild(framework_path)
+
     
     patch_list = incremental_build.get_patches()
     print (patch_list)
     for patch in patch_list:
-        incremental_build.apply_patch(patch)
-        #Get paltform clean build hash
-        incrementalbuild_hash = incremental_build.get_incremental_build_hash()
-        #Get platform clean build hash
-        cleanbuild_hash = incremental_build.get_clean_build_hash()
-        incremental_build.revert_patch(patch)
+        #For code base after clone, do full build and save hash.
+        incremental_build_obj.platform_fullbuild()
+
+        #Apply Patch, do incremental build and get hash
+        incremental_build_obj.apply_patch(patch)
+        incremental_build_obj.platform_build()
+        incrementalbuild_hash = incremental_build_obj.get_hash()
+        
+        #Clean the build, build platform and get hash
+        incremental_build_obj.platform_cleanbuild()
+        incremental_build_obj.platform_build()
+        cleanbuild_hash = incremental_build_obj.get_hash()
+
+        #Revert patch to code base
+        incremental_build_obj.revert_patch(patch)
         assert(incrementalbuild_hash==cleanbuild_hash)
 
