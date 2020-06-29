@@ -74,7 +74,8 @@ class PlatformIncrementalBuild:
         return build_file_list
 
     def apply_patch(self, patchfile):
-        self.git_cmd("am", "--3way", "--ignore-space-change", "--keep-cr", patchfile) 
+        #self.git_cmd("am", "--3way", "--ignore-space-change", "--keep-cr", patchfile)
+        self.git_cmd("apply", patchfile) 
 
     def revert_patch(self, patchfile):
         self.git_cmd("apply", "-R", patchfile) 
